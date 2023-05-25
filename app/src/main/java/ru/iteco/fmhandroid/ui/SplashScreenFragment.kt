@@ -135,6 +135,7 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
     private val splashscreenImage = splashscreenImages.random()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         onFullScreen()
@@ -155,6 +156,9 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        EspressoIdlingResources.increment();
+
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSplashScreenBinding.bind(view)
@@ -235,6 +239,10 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
             delay(3_000)
             authViewModel.authorization()
         }
+
+        EspressoIdlingResources.decrement();
+
+
     }
 
     override fun onDestroyView() {

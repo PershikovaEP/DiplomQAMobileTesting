@@ -11,6 +11,7 @@ import ru.iteco.fmhandroid.databinding.FragmentAboutBinding
 
 class AboutFragment : Fragment(R.layout.fragment_about) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentAboutBinding.bind(view)
@@ -25,5 +26,6 @@ class AboutFragment : Fragment(R.layout.fragment_about) {
         binding.containerCustomAppBarIncludeOnFragmentAbout.aboutBackImageButton.setOnClickListener {
             findNavController().navigateUp()
         }
+
     }
 }

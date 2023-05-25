@@ -72,6 +72,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     @SuppressLint("Recycle")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentMainBinding.bind(view)
