@@ -75,6 +75,13 @@ public class Utils {
         return currentDate;
     }
 
+    public String dateMore1Month() {
+        String currentDate =  Integer.toString(LocalDate.now().getDayOfMonth()) + '.' +
+                LocalDate.now().plusMonths(1).format(DateTimeFormatter.ofPattern("MM"))
+                + '.' + Integer.toString(LocalDate.now().getYear());
+        return currentDate;
+    }
+
     }
 
 

@@ -1,6 +1,7 @@
 package ru.iteco.fmhandroid;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
@@ -27,6 +28,7 @@ import ru.iteco.fmhandroid.pageObject.AppBar;
 import ru.iteco.fmhandroid.pageObject.Claims;
 import ru.iteco.fmhandroid.pageObject.ControlPanelNews;
 import ru.iteco.fmhandroid.pageObject.CreateNews;
+import ru.iteco.fmhandroid.pageObject.EditNews;
 import ru.iteco.fmhandroid.pageObject.Main;
 import ru.iteco.fmhandroid.pageObject.News;
 import ru.iteco.fmhandroid.ui.AppActivity;
@@ -46,6 +48,7 @@ public class AppTest {
     AppBar appBar = new AppBar();
     CreateNews createNews = new CreateNews();
     Utils utils = new Utils();
+    EditNews editNews = new EditNews();
 
 
 
@@ -229,7 +232,7 @@ public class AppTest {
 
     @Epic("Новости")
     @Feature("Успешное создание новости")
-    @Description("Должна создаться новость на экране новостей")
+    @Description("Должна создаться новость на в панели управления новостей")
     @Test
     public void shouldLog1InAndShowTheMainScreenAndLogOut() {
         authorization.loginSuccessful();
@@ -318,46 +321,47 @@ public class AppTest {
 
     @Epic("Новости")
     @Feature("Редактирование новости")
-    @Description("Должна создаться новость на экране новостей")
+    @Description("После редактирования новость должна отредактироваться")
     @Test
-    public void shouldLog1InAndShowTheMainScrefenAndLogOut() {
+    public void shouldEditTheNewsAfterEditing() {
         authorization.loginSuccessful();
         appBar.switchToNews();
         news.switchControlPanelNews();
         controlPanelNews.addNews();
-        createNews.addCategory("День рождения");
-        String text = "День Рождения Маши";
-        createNews.addTitle(text);
-        createNews.addDate(utils.currentDate());
-        createNews.addTime("12.00");
-        createNews.addDescription("тест");
-        createNews.pressSave();
-        ViewInteraction textTitle = onView(withText(text));
+        String title = "Создание";
+        createNews.createNews("День рождения", title, utils.currentDate(), "12.00", "тест" );
+        ViewInteraction textTitle = onView(withText(title));
         textTitle.check(matches(isDisplayed()));
 
+        editNews.editCategory("Объявление");
+        String editTitle = "Редактирование";
+        editNews.editTitle(editTitle);
+        editNews.editDate(utils.dateMore1Month());
+        editNews.editTime("16.00");
+        editNews.editDescription("тест редактирование");
+
+        ViewInteraction editTextTitle = onView(withText(editTitle));
+        textTitle.check(matches(isDisplayed()));
 
         appBar.pressOut();
     }
 
     @Epic("Новости")
     @Feature("Удаление новости")
-    @Description("Должна создаться новость на экране новостей")
+    @Description("После удаления новости не должно быть в панели управления новостей")
     @Test
-    public void shouldLog1InAnfdShowTheMainScreenAndLogOut() {
+    public void shouldNewsBeDeletedAfterDeletion() {
         authorization.loginSuccessful();
         appBar.switchToNews();
         news.switchControlPanelNews();
         controlPanelNews.addNews();
-        createNews.addCategory("День рождения");
-        String text = "День Рождения Маши";
-        createNews.addTitle(text);
-        createNews.addDate(utils.currentDate());
-        createNews.addTime("12.00");
-        createNews.addDescription("тест");
-        createNews.pressSave();
-
-        ViewInteraction textTitle = onView(withText(text));
+        String title = "Удаление";
+        createNews.createNews("День рождения", title, utils.currentDate(), "12.00", "тест" );
+        ViewInteraction textTitle = onView(withText(title));
         textTitle.check(matches(isDisplayed()));
+
+        controlPanelNews.deleteNews();
+        textTitle.check(doesNotExist());
 
         appBar.pressOut();
     }

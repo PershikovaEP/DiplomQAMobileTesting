@@ -25,7 +25,8 @@ public class CreateNews {
 
     private final ViewInteraction cancel = onView(withId(R.id.cancel_button));
     private final ViewInteraction textToScreen = onView(withId(R.id.custom_app_bar_title_text_view));
-    private final ViewInteraction buttonOkAfterCancel = onView(withText("ОК"));
+    private final ViewInteraction buttonOkAfterCancel = onView(withId(android.R.id.button1));
+
 
     public ViewInteraction getTextToScreen() {
         return textToScreen;
@@ -67,7 +68,17 @@ public class CreateNews {
         closeSoftKeyboard();
         cancel.check(matches(isDisplayed()));
         cancel.perform(scrollTo(), click());
+        buttonOkAfterCancel.check(matches(isDisplayed()));
         buttonOkAfterCancel.perform(click());
+    }
+
+    public void createNews(String category, String title, String date, String time, String description) {
+        addCategory(category);
+        addTitle(title);
+        addDate(date);
+        addTime(time);
+        addDescription(description);
+        pressSave();
     }
 
 

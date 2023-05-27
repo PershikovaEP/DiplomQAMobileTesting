@@ -12,11 +12,28 @@ import androidx.test.espresso.ViewInteraction;
 import ru.iteco.fmhandroid.R;
 
 public class ControlPanelNews {
-    private final ViewInteraction buttonAddNews = onView(
-            allOf(withId(R.id.add_news_image_view)));
+    private final ViewInteraction buttonAddNews = onView(withId(R.id.add_news_image_view));
+
+    private final ViewInteraction buttonEditNews = onView(withId(R.id.edit_news_item_image_view));
+
+    private final ViewInteraction buttonDeleteNews = onView(withId(R.id.delete_news_item_image_view));
+    private final ViewInteraction buttonOk = onView(withId(android.R.id.button1));
+
 
     public void addNews() {
         buttonAddNews.check(matches(isDisplayed()));
         buttonAddNews.perform(click());
+    }
+
+    public void pressEditPanelNews() {
+        buttonEditNews.check(matches(isDisplayed()));
+        buttonEditNews.perform(click());
+    }
+
+    public void deleteNews() {
+        buttonDeleteNews.check(matches(isDisplayed()));
+        buttonDeleteNews.perform(click());
+        buttonOk.check(matches(isDisplayed()));
+        buttonOk.perform(click());
     }
 }
