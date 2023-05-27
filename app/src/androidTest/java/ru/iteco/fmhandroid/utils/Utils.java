@@ -14,9 +14,11 @@ import androidx.test.espresso.util.TreeIterables;
 
 import org.hamcrest.Matcher;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeoutException;
 
-public class WaitDisplayed {
+public class Utils {
 
     public static ViewAction waitDisplayed(final int viewId, final long millis) {
         return new ViewAction() {
@@ -59,4 +61,20 @@ public class WaitDisplayed {
         };
     }
 
-}
+    public String currentDate() {
+        String currentDate =  Integer.toString(LocalDate.now().getDayOfMonth()) + '.' +
+                LocalDate.now().format(DateTimeFormatter.ofPattern("MM"))
+                + '.' + Integer.toString(LocalDate.now().getYear());
+        return currentDate;
+    }
+
+    public String dateMore5Year() {
+        String currentDate =  Integer.toString(LocalDate.now().getDayOfMonth()) + '.' +
+                LocalDate.now().format(DateTimeFormatter.ofPattern("MM"))
+                + '.' + Integer.toString(LocalDate.now().plusYears(5).getYear());
+        return currentDate;
+    }
+
+    }
+
+

@@ -11,6 +11,12 @@ import androidx.test.espresso.ViewInteraction;
 
 import ru.iteco.fmhandroid.R;
 
-public class Claims {
+public class ControlPanelNews {
+    private final ViewInteraction buttonAddNews = onView(
+            allOf(withId(R.id.add_news_image_view)));
 
+    public void addNews() {
+        buttonAddNews.check(matches(isDisplayed()));
+        buttonAddNews.perform(click());
+    }
 }
