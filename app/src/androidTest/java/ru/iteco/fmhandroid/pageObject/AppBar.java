@@ -34,6 +34,7 @@ public class AppBar {
     private final ViewInteraction out = onView(withText("Выйти"));
     private final ViewInteraction buttonMainMenu = onView(withId(R.id.main_menu_image_button));
 
+    private final ViewInteraction buttonOurMission = onView(withId(R.id.our_mission_image_button));
     public void pressOut() {
         ViewInteraction buttonProfile = onView(withId(pressProfile));
         buttonProfile.check(matches(isDisplayed()));
@@ -73,5 +74,10 @@ public class AppBar {
 
         mainMenuMain.check(matches(isDisplayed()));
         mainMenuMain.perform(click());
+    }
+
+    public void switchToOurMission() {
+        buttonOurMission.check(matches(isDisplayed()));
+        buttonOurMission.perform(click());
     }
 }

@@ -10,8 +10,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static ru.iteco.fmhandroid.ui.utils.Utils.waitDisplayed;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
+
+import android.content.Intent;
 
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
 
@@ -21,10 +27,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import hilt_aggregated_deps._ru_iteco_fmhandroid_api_ApiModule;
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
 import io.qameta.allure.kotlin.Description;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Feature;
+import ru.iteco.fmhandroid.pageObject.AboutApp;
 import ru.iteco.fmhandroid.pageObject.AppBar;
 import ru.iteco.fmhandroid.pageObject.Claims;
 import ru.iteco.fmhandroid.pageObject.ControlPanelNews;
@@ -35,9 +43,12 @@ import ru.iteco.fmhandroid.pageObject.EditNews;
 import ru.iteco.fmhandroid.pageObject.Main;
 import ru.iteco.fmhandroid.pageObject.News;
 import ru.iteco.fmhandroid.pageObject.OpenClaims;
+import ru.iteco.fmhandroid.pageObject.OurMission;
 import ru.iteco.fmhandroid.ui.AppActivity;
 import ru.iteco.fmhandroid.pageObject.Authorization;
 import ru.iteco.fmhandroid.ui.utils.Utils;
+
+
 
 ;
 @LargeTest
@@ -56,6 +67,9 @@ public class AppTest {
     CreateClaims createClaims = new CreateClaims();
     EditClaims editClaims = new EditClaims();
     OpenClaims openClaims = new OpenClaims();
+
+    OurMission ourMission = new OurMission();
+    AboutApp aboutApp = new AboutApp();
 
 
 
@@ -472,7 +486,7 @@ public class AppTest {
         ViewInteraction textTitle = onView(withText(title));
         textTitle.check(matches(isDisplayed()));
 
-        textTitle.perform(click()); //получится ли кликнуть на него?
+        textTitle.perform(click());
         openClaims.pressEditClaims();
         String editTitle = "Редактирование заявки";
         editClaims.editTitle(editTitle);
@@ -481,8 +495,8 @@ public class AppTest {
         editClaims.editTime("16.00");
         editClaims.editDescription("тест редактирование");
 
-        ViewInteraction editTextTitle = onView(withText(editTitle));
-        textTitle.check(matches(isDisplayed()));
+        openClaims.getTextTitle().check(matches(isDisplayed()));
+        openClaims.getTextTitle().check(matches(withText(editTitle)));
 
         appBar.pressOut();
     }
@@ -499,20 +513,117 @@ public class AppTest {
         createClaims.createClaims(title, " ", utils.currentDate(), "12.00", "тест" );
         ViewInteraction textTitle = onView(withText(title));
         textTitle.check(matches(isDisplayed()));
-
         textTitle.perform(click());
-        ViewInteraction textStatus = onView(withText("Открыта"));
-        textStatus.check(matches(isDisplayed()));
+
+        openClaims.getTextStatus().check(matches(isDisplayed()));
+        openClaims.getTextStatus().check(matches(withText("Открыта")));
+
         openClaims.pressStatusClaims();
+        openClaims.getStatusCanceled().perform(click());
 
-        ViewInteraction changeStatus = onView(withText("Отменить"));
-        changeStatus.check(matches(isDisplayed()));
-        changeStatus.perform(click());
-
-        ViewInteraction textStatusAfterEdit = onView(withText("Отменена"));
-        textStatusAfterEdit.check(matches(isDisplayed()));
+        openClaims.getTextStatus().check(matches(isDisplayed()));
+        openClaims.getTextStatus().check(matches(withText("Отменена")));
 
         appBar.pressOut();
     }
+
+    @Epic("Заявки")
+    @Feature("Исполнение заявки")
+    @Description("После исполнения статус заявки изменится на исполнена")
+    @Test
+    public void shouldChangeStatusOfClaimsToComplited() {
+        authorization.loginSuccessful();
+        appBar.switchToClaims();
+        claims.pressAddClaim();
+        String title = "Создание заявки для исполнения";
+        createClaims.createClaims(title, "Ivanov Ivan Ivanovich", utils.currentDate(), "12.00", "тест" );
+        ViewInteraction textTitle = onView(withText(title));
+        textTitle.check(matches(isDisplayed()));
+        textTitle.perform(click());
+
+        openClaims.getTextStatus().check(matches(isDisplayed()));
+        openClaims.getTextStatus().check(matches(withText("В работе")));
+
+        openClaims.pressStatusClaims();
+        openClaims.getStatusCompleted().perform(click());
+        String comment = "заявка исполнена";
+        openClaims.addComment(comment);
+        openClaims.pressOk();
+
+        openClaims.getTextStatus().check(matches(isDisplayed()));
+        openClaims.getTextStatus().check(matches(withText("Выполнена")));
+        openClaims.getTextComment().check(matches(isDisplayed()));
+        openClaims.getTextComment().check(matches(withText(comment)));
+
+        appBar.pressOut();
+    }
+
+    @Epic("Тематические статьи")
+    @Feature("Просмотр тематических статей")
+    @Description("Должна открыться страница с тематическими статьями")
+    @Test
+    public void shouldOpenPageWithThematicArticles() {
+        authorization.loginSuccessful();
+        appBar.switchToOurMission();
+
+        ourMission.getTextScreen().check(matches(isDisplayed()));
+        ourMission.getTextScreen().check(matches(withText("Главное - жить любя")));
+    }
+
+    @Epic("О приложении")
+    @Feature("Просмотр политики конфиденциальности")
+    @Description("Должна открыться политика конфиденциальности")
+    @Test
+    public void shouldOpenPrivacyPolicy() {
+        authorization.loginSuccessful();
+        appBar.switchToAboutApp();
+
+        Intents.init();
+        aboutApp.getPrivacyPolicy().perform(click());
+        intended(hasAction(Intent.ACTION_VIEW));
+        intended(hasData("https://vhospice.org/#/privacy-policy"));
+        Intents.release();
+
+        aboutApp.getButtonBack().perform(click());
+        appBar.pressOut();
+    }
+
+    @Epic("О приложении")
+    @Feature("Просмотр пользовательского соглашения")
+    @Description("Должно открыться пользовательское соглашение")
+    @Test
+    public void shouldOpenTermsOfUse() {
+        authorization.loginSuccessful();
+        appBar.switchToAboutApp();
+
+        Intents.init();
+        aboutApp.getTermsOfUse().perform(click());
+        intended(hasAction(Intent.ACTION_VIEW));
+        intended(hasData("https://vhospice.org/#/terms-of-use"));
+        Intents.release();
+
+        aboutApp.getButtonBack().perform(click());
+        appBar.pressOut();
+    }
+
+    @Epic("Главный  экран")
+    @Feature("Переход на главный экран")
+    @Description("Должен открыться главный экран")
+    @Test
+    public void shouldOpenMainScreen() {
+        authorization.loginSuccessful();
+        appBar.switchToOurMission();
+        ourMission.getTextScreen().check(matches(isDisplayed()));
+        ourMission.getTextScreen().check(matches(withText("Главное - жить любя")));
+
+        appBar.switchToMain();
+
+        main.getTextViewMainNews().check(matches(isDisplayed()));
+        main.getTextViewMainNews().check(matches(withText("Новости")));
+             
+        appBar.pressOut();
+    }
+
+
 }
 
