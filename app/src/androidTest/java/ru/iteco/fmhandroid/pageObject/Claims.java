@@ -13,4 +13,17 @@ import ru.iteco.fmhandroid.R;
 
 public class Claims {
 
+    private final ViewInteraction buttonAddClaims = onView(withId(R.id.add_new_claim_material_button));
+
+
+    public void pressAddClaim() {
+        buttonAddClaims.check(matches(isDisplayed()));
+        buttonAddClaims.perform(click());
+    }
+
+
+
+
+
+
 }

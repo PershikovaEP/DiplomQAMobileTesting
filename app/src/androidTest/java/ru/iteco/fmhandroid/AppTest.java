@@ -1,6 +1,7 @@
 package ru.iteco.fmhandroid;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -27,10 +28,13 @@ import io.qameta.allure.kotlin.Feature;
 import ru.iteco.fmhandroid.pageObject.AppBar;
 import ru.iteco.fmhandroid.pageObject.Claims;
 import ru.iteco.fmhandroid.pageObject.ControlPanelNews;
+import ru.iteco.fmhandroid.pageObject.CreateClaims;
 import ru.iteco.fmhandroid.pageObject.CreateNews;
+import ru.iteco.fmhandroid.pageObject.EditClaims;
 import ru.iteco.fmhandroid.pageObject.EditNews;
 import ru.iteco.fmhandroid.pageObject.Main;
 import ru.iteco.fmhandroid.pageObject.News;
+import ru.iteco.fmhandroid.pageObject.OpenClaims;
 import ru.iteco.fmhandroid.ui.AppActivity;
 import ru.iteco.fmhandroid.pageObject.Authorization;
 import ru.iteco.fmhandroid.ui.utils.Utils;
@@ -49,6 +53,9 @@ public class AppTest {
     CreateNews createNews = new CreateNews();
     Utils utils = new Utils();
     EditNews editNews = new EditNews();
+    CreateClaims createClaims = new CreateClaims();
+    EditClaims editClaims = new EditClaims();
+    OpenClaims openClaims = new OpenClaims();
 
 
 
@@ -70,7 +77,7 @@ public class AppTest {
         authorization.inputPassword("password2");
         authorization.pressButton();
 
-        onView(isRoot()).perform(waitDisplayed(appBar.getPressProfile(), 6000));
+       // onView(isRoot()).perform(waitDisplayed(appBar.getPressProfile(), 6000));
         main.getTextViewMainNews().check(matches(isDisplayed()));
         main.getTextViewMainNews().check(matches(withText("Новости")));
 
@@ -240,7 +247,7 @@ public class AppTest {
         news.switchControlPanelNews();
         controlPanelNews.addNews();
         createNews.addCategory("День рождения");
-        String text = "День Рождения Маши";
+        String text = "Создание новости";
         createNews.addTitle(text);
         createNews.addDate(utils.currentDate());
         createNews.addTime("12.00");
@@ -263,7 +270,7 @@ public class AppTest {
         news.switchControlPanelNews();
         controlPanelNews.addNews();
         createNews.addCategory("День рождения");
-        String text = "Прошлое";
+        String text = "Создание новости в прошлом";
         createNews.addTitle(text);
         createNews.addDate("01.01.2020");
         createNews.addTime("12.00");
@@ -287,7 +294,7 @@ public class AppTest {
         news.switchControlPanelNews();
         controlPanelNews.addNews();
         createNews.addCategory("День рождения");
-        String text = "Будущее";
+        String text = "Создание новости в будущем";
         createNews.addTitle(text);
         createNews.addDate(utils.dateMore5Year());
         createNews.addTime("12.00");
@@ -355,7 +362,7 @@ public class AppTest {
         appBar.switchToNews();
         news.switchControlPanelNews();
         controlPanelNews.addNews();
-        String title = "Удаление";
+        String title = "Удаление новости";
         createNews.createNews("День рождения", title, utils.currentDate(), "12.00", "тест" );
         ViewInteraction textTitle = onView(withText(title));
         textTitle.check(matches(isDisplayed()));
@@ -366,6 +373,146 @@ public class AppTest {
         appBar.pressOut();
     }
 
+    @Epic("Заявки")
+    @Feature("Создание заявки")
+    @Description("Должна создаться заявка на экране заявок")
+    @Test
+    public void shouldBeMadeClaims() {
+        authorization.loginSuccessful();
+        appBar.switchToClaims();
+        claims.pressAddClaim();
+        String title = "Создание заявки";
+        createClaims.addTitle(title);
+        createClaims.addExecutor("Ivanov Ivan Ivanovich");
+        createClaims.addDate(utils.currentDate());
+        createClaims.addTime("12.00");
+        createClaims.addDescription("тест");
+        createClaims.pressSave();
 
+        ViewInteraction textTitle = onView(withText(title));
+        textTitle.check(matches(isDisplayed()));
+
+        appBar.pressOut();
+    }
+
+    @Epic("Заявки")
+    @Feature("Создание заявки с плановой датой в прошлом")
+    @Description("При создании заявки с плановой датой в прошлом должен остаться на экране создания заявки")
+    @Test
+    public void shouldStayOnClaimsCreationScreenWhenCreatingClaimsInPast() {
+        authorization.loginSuccessful();
+        appBar.switchToClaims();
+        claims.pressAddClaim();
+        String title = "Создание заявки в прошлом";
+        createClaims.addTitle(title);
+        createClaims.addExecutor("Ivanov Ivan Ivanovich");
+        createClaims.addDate("01.01.2020");
+        createClaims.addTime("12.00");
+        createClaims.addDescription("тест");
+        createClaims.pressSave();
+
+        createClaims.getTextToScreen().check(matches(isDisplayed()));
+        createClaims.getTextToScreen().check(matches(withText("Создание")));
+
+        createNews.pressCancel();
+        appBar.pressOut();
+    }
+
+    @Epic("Заявки")
+    @Feature("Создание заявки с плановой датой спустя 5 лет")
+    @Description("При создании заявки с плановой датой в прошлом должен остаться на экране создания заявки")
+    @Test
+    public void shouldStayOnClaimsCreationScreenWhenCreatingAClaimsStoryAfter5Years() {
+        authorization.loginSuccessful();
+        appBar.switchToClaims();
+        claims.pressAddClaim();
+        String title = "Создание заявки в будущем";
+        createClaims.addTitle(title);
+        createClaims.addExecutor("Ivanov Ivan Ivanovich");
+        createClaims.addDate(utils.dateMore5Year());
+        createClaims.addTime("12.00");
+        createClaims.addDescription("тест");
+        createClaims.pressSave();
+
+        createClaims.getTextToScreen().check(matches(isDisplayed()));
+        createClaims.getTextToScreen().check(matches(withText("Создание")));
+
+        createNews.pressCancel();
+        appBar.pressOut();
+    }
+
+    @Epic("Заявки")
+    @Feature("Создание заявки с пустыми полями")
+    @Description("При создании заявки с пустыми полями должен остаться на экране создания заявки")
+    @Test
+    public void shouldStayOnClaimsCreationScreenWhenCreatingClaimsWithEmptyFields() {
+        authorization.loginSuccessful();
+        appBar.switchToClaims();
+        claims.pressAddClaim();
+        createClaims.pressSave();
+        createClaims.pressOk();
+
+        createClaims.getTextToScreen().check(matches(isDisplayed()));
+        createClaims.getTextToScreen().check(matches(withText("Создание")));
+
+        createNews.pressCancel();
+        appBar.pressOut();
+    }
+
+    @Epic("Заявки")
+    @Feature("Редактирование заявки")
+    @Description("После редактирования заявка должна отредактироваться")
+    @Test
+    public void shouldEditTheClaimsAfterEditing() {
+        authorization.loginSuccessful();
+        appBar.switchToClaims();
+        claims.pressAddClaim();
+        String title = "Создание заявки для редактирования";
+        createClaims.createClaims(title, " ", utils.currentDate(), "12.00", "тест" );
+        ViewInteraction textTitle = onView(withText(title));
+        textTitle.check(matches(isDisplayed()));
+
+        textTitle.perform(click()); //получится ли кликнуть на него?
+        openClaims.pressEditClaims();
+        String editTitle = "Редактирование заявки";
+        editClaims.editTitle(editTitle);
+        editClaims.editExecutor("Ivanov Ivan Ivanovich");
+        editClaims.editDate(utils.dateMore1Month());
+        editClaims.editTime("16.00");
+        editClaims.editDescription("тест редактирование");
+
+        ViewInteraction editTextTitle = onView(withText(editTitle));
+        textTitle.check(matches(isDisplayed()));
+
+        appBar.pressOut();
+    }
+
+    @Epic("Заявки")
+    @Feature("Отмена заявки")
+    @Description("После отмены статус заявки изменится на отменена")
+    @Test
+    public void shouldChangeStatusOfClaimsToCanceled () {
+        authorization.loginSuccessful();
+        appBar.switchToClaims();
+        claims.pressAddClaim();
+        String title = "Создание заявки для отмены";
+        createClaims.createClaims(title, " ", utils.currentDate(), "12.00", "тест" );
+        ViewInteraction textTitle = onView(withText(title));
+        textTitle.check(matches(isDisplayed()));
+
+        textTitle.perform(click());
+        ViewInteraction textStatus = onView(withText("Открыта"));
+        textStatus.check(matches(isDisplayed()));
+        openClaims.pressStatusClaims();
+
+        ViewInteraction changeStatus = onView(withText("Отменить"));
+        changeStatus.check(matches(isDisplayed()));
+        changeStatus.perform(click());
+
+        ViewInteraction textStatusAfterEdit = onView(withText("Отменена"));
+        textStatusAfterEdit.check(matches(isDisplayed()));
+
+        appBar.pressOut();
+    }
 }
 
