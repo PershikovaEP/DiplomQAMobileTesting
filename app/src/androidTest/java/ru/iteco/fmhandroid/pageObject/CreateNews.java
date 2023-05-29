@@ -61,7 +61,7 @@ public class CreateNews {
     public void pressSave() {
         closeSoftKeyboard();
         save.check(matches(isDisplayed()));
-        save.perform(scrollTo(), click());
+        save.perform(scrollTo()).perform(click());
     }
 
     public void pressCancel() {

@@ -59,7 +59,7 @@ public class CreateClaims {
         closeSoftKeyboard();
         scrollTo();
         save.check(matches(isDisplayed()));
-        save.perform(click());
+        save.perform(scrollTo()).perform(click());
     }
 
     public void pressOk() {

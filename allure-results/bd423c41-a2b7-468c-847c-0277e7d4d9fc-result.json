@@ -1,0 +1,61 @@
+{
+    "name": "shouldOpenMainScreen",
+    "start": 1685383304257,
+    "stop": 1685383311379,
+    "stage": "finished",
+    "description": "Должен открыться главный экран",
+    "descriptionHtml": null,
+    "status": "passed",
+    "statusDetails": null,
+    "steps": [
+    ],
+    "attachments": [
+    ],
+    "parameters": [
+    ],
+    "uuid": "bd423c41-a2b7-468c-847c-0277e7d4d9fc",
+    "historyId": "43e32471653979bedc461e7d23ca6c45",
+    "fullName": "ru.iteco.fmhandroid.AppTest.shouldOpenMainScreen",
+    "labels": [
+        {
+            "name": "package",
+            "value": "ru.iteco.fmhandroid"
+        },
+        {
+            "name": "testClass",
+            "value": "ru.iteco.fmhandroid.AppTest"
+        },
+        {
+            "name": "testMethod",
+            "value": "shouldOpenMainScreen"
+        },
+        {
+            "name": "suite",
+            "value": "ru.iteco.fmhandroid.AppTest"
+        },
+        {
+            "name": "host",
+            "value": "localhost"
+        },
+        {
+            "name": "thread",
+            "value": "Instr: androidx.test.runner.AndroidJUnitRunner(3834)"
+        },
+        {
+            "name": "framework",
+            "value": "junit4"
+        },
+        {
+            "name": "language",
+            "value": "kotlin"
+        },
+        {
+            "name": "epic",
+            "value": "Главный  экран"
+        },
+        {
+            "name": "feature",
+            "value": "Переход на главный экран"
+        }
+    ]
+}

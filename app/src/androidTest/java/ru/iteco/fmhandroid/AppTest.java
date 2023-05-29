@@ -1,26 +1,40 @@
 package ru.iteco.fmhandroid;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.is;
 import static ru.iteco.fmhandroid.ui.utils.Utils.waitDisplayed;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 
 import android.content.Intent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -253,9 +267,9 @@ public class AppTest {
 
     @Epic("Новости")
     @Feature("Успешное создание новости")
-    @Description("Должна создаться новость на в панели управления новостей")
+    @Description("Должна создаться новость c указанной темой в панели управления новостей")
     @Test
-    public void shouldLog1InAndShowTheMainScreenAndLogOut() {
+        public void shouldLog1InAndShowTheMainScreenAndLogOut() {
         authorization.loginSuccessful();
         appBar.switchToNews();
         news.switchControlPanelNews();
@@ -342,7 +356,7 @@ public class AppTest {
 
     @Epic("Новости")
     @Feature("Редактирование новости")
-    @Description("После редактирования новость должна отредактироваться")
+    @Description("После редактирования новость должна отредактироваться, проверяем изменение темы")
     @Test
     public void shouldEditTheNewsAfterEditing() {
         authorization.loginSuccessful();
@@ -354,12 +368,14 @@ public class AppTest {
         ViewInteraction textTitle = onView(withText(title));
         textTitle.check(matches(isDisplayed()));
 
+        controlPanelNews.pressEditPanelNews();
         editNews.editCategory("Объявление");
         String editTitle = "Редактирование";
         editNews.editTitle(editTitle);
         editNews.editDate(utils.dateMore1Month());
         editNews.editTime("16.00");
         editNews.editDescription("тест редактирование");
+        editNews.pressSave();
 
         ViewInteraction editTextTitle = onView(withText(editTitle));
         textTitle.check(matches(isDisplayed()));
@@ -369,7 +385,7 @@ public class AppTest {
 
     @Epic("Новости")
     @Feature("Удаление новости")
-    @Description("После удаления новости не должно быть в панели управления новостей")
+    @Description("После удаления новости c указанной темой не должно быть в панели управления новостей")
     @Test
     public void shouldNewsBeDeletedAfterDeletion() {
         authorization.loginSuccessful();
@@ -389,7 +405,7 @@ public class AppTest {
 
     @Epic("Заявки")
     @Feature("Создание заявки")
-    @Description("Должна создаться заявка на экране заявок")
+    @Description("Должна создаться заявка с указанной темой на экране заявок")
     @Test
     public void shouldBeMadeClaims() {
         authorization.loginSuccessful();
@@ -475,7 +491,7 @@ public class AppTest {
 
     @Epic("Заявки")
     @Feature("Редактирование заявки")
-    @Description("После редактирования заявка должна отредактироваться")
+    @Description("После редактирования заявки заявка должна отредактироваться (проверяем, что на экране открытой заявки изменилась тема)")
     @Test
     public void shouldEditTheClaimsAfterEditing() {
         authorization.loginSuccessful();
@@ -494,6 +510,7 @@ public class AppTest {
         editClaims.editDate(utils.dateMore1Month());
         editClaims.editTime("16.00");
         editClaims.editDescription("тест редактирование");
+        editClaims.pressSave();
 
         openClaims.getTextTitle().check(matches(isDisplayed()));
         openClaims.getTextTitle().check(matches(withText(editTitle)));
@@ -529,7 +546,7 @@ public class AppTest {
 
     @Epic("Заявки")
     @Feature("Исполнение заявки")
-    @Description("После исполнения статус заявки изменится на исполнена")
+    @Description("После исполнения статус заявки изменится на исполнена, появится комментарий")
     @Test
     public void shouldChangeStatusOfClaimsToComplited() {
         authorization.loginSuccessful();
@@ -620,10 +637,9 @@ public class AppTest {
 
         main.getTextViewMainNews().check(matches(isDisplayed()));
         main.getTextViewMainNews().check(matches(withText("Новости")));
-             
+
         appBar.pressOut();
     }
-
 
 }
 
