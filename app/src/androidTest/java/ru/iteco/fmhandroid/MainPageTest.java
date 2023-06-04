@@ -52,8 +52,8 @@ public class MainPageTest {
     @Before
     public void setUp() {
         onView(isRoot()).perform(waitDisplayed(appBar.getAppBarFragmentMain(), 5000));
-        if (main.isDisplayedButtonProfile()) {
-            appBar.pressOut();
+        if (!main.isDisplayedButtonProfile()) {
+            authorization.loginSuccessful();
         }
     }
 
@@ -63,15 +63,10 @@ public class MainPageTest {
     @Description("Должен открыться главный экран")
     @Test
     public void shouldOpenMainScreen() {
-        authorization.loginSuccessful();
         appBar.switchToOurMission();
-        ourMission.getTextScreen().check(matches(isDisplayed()));
-        ourMission.getTextScreen().check(matches(withText("Главное - жить любя")));
-
+        ourMission.textScreenCheckIsDisplayed();
         appBar.switchToMain();
-
         main.checkNews();
-
     }
 
 }

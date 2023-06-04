@@ -6,8 +6,11 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
 import androidx.test.espresso.ViewInteraction;
 
@@ -16,7 +19,8 @@ import ru.iteco.fmhandroid.R;
 
 public class OpenClaims {
 
-    private final ViewInteraction buttonEdit = onView(withId(R.id.edit_processing_image_button));
+    EditClaims editClaims = new EditClaims();
+    private final int buttonEdit = R.id.edit_processing_image_button;
     private final ViewInteraction buttonStatus = onView(withId(R.id.status_processing_image_button));
     private final ViewInteraction textStatus = onView(withId(R.id.status_label_text_view));
     private final ViewInteraction addComment = onView(withId(R.id.editText));
@@ -26,28 +30,16 @@ public class OpenClaims {
     private final ViewInteraction statusCanceled = onView(withText("Отменить"));
 
     private final ViewInteraction textTitle = onView(withId(R.id.title_text_view));
-    public ViewInteraction getTextStatus() {
-        return textStatus;
+
+    public int getButtonEdit() {
+        return buttonEdit;
     }
-
-    public ViewInteraction getTextComment() {
-        return textComment;
-    }
-
-    public ViewInteraction getStatusCompleted() {
-        return statusCompleted;
-    }
-
-    public ViewInteraction getStatusCanceled() {
-        return statusCanceled;
-    }
-
-
 
     @Step("Нажатие на кнопку Редактировать Заявку")
     public void pressEditClaims() {
-        buttonEdit.check(matches(isDisplayed()));
-        buttonEdit.perform(click());
+        onView(withId(buttonEdit)).check(matches(isDisplayed()));
+        onView(withId(buttonEdit)).perform(click());
+        onView(isRoot()).perform(waitDisplayed(editClaims.getButtonSave(), 5000));
     }
 
     @Step("Нажатие на кнопку Статус заявки")
@@ -55,8 +47,6 @@ public class OpenClaims {
         buttonStatus.check(matches(isDisplayed()));
         buttonStatus.perform(click());
     }
-
-
 
     @Step("Ввод в поле комментарий {text}")
     public void addComment(String text) {
@@ -70,17 +60,32 @@ public class OpenClaims {
         buttonOk.perform(click());
     }
 
-    @Step("Поиск элемента, содержащего {text}, и проверка его видимости")
-    public void searchElementAndCheckIsDisplayed(String text) {
+    @Step("Поиск темы, содержащей {text}, и проверка её видимости")
+    public void searchTitleAndCheckIsDisplayed(String text) {
+        onView(isRoot()).perform(waitDisplayed(buttonEdit, 5000));
         ViewInteraction textClaims = onView(withText(text));
         textClaims.check(matches(isDisplayed()));
     }
 
-    @Step("Проверка статуса заявки")
-    public void statusClaims(String text) {
-        textTitle.check(matches(isDisplayed()));
-        textTitle.check(matches(withText(text)));
+    @Step("Проверка соответсвия комментария введенному тексту")
+    public void commentCheckWithText(String text) {
+        textComment.check(matches(isDisplayed()));
+        textComment.check(matches(withText(text)));
     }
 
+    @Step("Проверка статуса заявки")
+    public void statusClaims(String text) {
+        textStatus.check(matches(isDisplayed()));
+        textStatus.check(matches(withText(text)));
+    }
+
+    @Step("Изменение статуса заявки на Отменена")
+    public void pressStatusCanceled() {
+        statusCanceled.perform(click());
+    }
+    @Step("Изменение статуса заявки на Выполнена")
+    public void pressStatusCompleted() {
+        statusCompleted.perform(click());
+    }
 
 }

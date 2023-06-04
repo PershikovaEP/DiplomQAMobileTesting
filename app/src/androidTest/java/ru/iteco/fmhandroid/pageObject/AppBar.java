@@ -106,7 +106,7 @@ public class AppBar {
     public void switchToOurMission() {
         buttonOurMission.check(matches(isDisplayed()));
         buttonOurMission.perform(click());
-        onView(isRoot()).perform(waitDisplayed(ourMission.getText(), 5000));
+        onView(isRoot()).perform(waitDisplayed(ourMission.getTextScreen(), 5000));
     }
 
 }

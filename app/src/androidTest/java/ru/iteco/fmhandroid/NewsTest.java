@@ -70,8 +70,8 @@ public class NewsTest {
     @Before
     public void setUp() {
         onView(isRoot()).perform(waitDisplayed(appBar.getAppBarFragmentMain(), 5000));
-        if (main.isDisplayedButtonProfile()) {
-            appBar.pressOut();
+        if (!main.isDisplayedButtonProfile()) {
+            authorization.loginSuccessful();
         }
     }
 
@@ -81,7 +81,6 @@ public class NewsTest {
     @Description("Должна создаться новость c указанной темой в панели управления новостей")
     @Test
     public void shouldLog1InAndShowTheMainScreenAndLogOut() {
-        authorization.loginSuccessful();
         appBar.switchToNews();
         news.switchControlPanelNews();
         controlPanelNews.addNews();
@@ -105,7 +104,6 @@ public class NewsTest {
     @Description("При создании новости в прошлом должен остаться на экране создания новости")
     @Test
     public void shouldStayOnNewsCreationScreenWhenCreatingNewsInPast() {
-        authorization.loginSuccessful();
         appBar.switchToNews();
         news.switchControlPanelNews();
         controlPanelNews.addNews();
@@ -131,7 +129,6 @@ public class NewsTest {
     @Description("При создании новости спустя 5 лет должен остаться на экране создания новости")
     @Test
     public void shouldStayOnNewsCreationScreenWhenCreatingANewsStoryAfter5Years() {
-        authorization.loginSuccessful();
         appBar.switchToNews();
         news.switchControlPanelNews();
         controlPanelNews.addNews();
@@ -157,7 +154,6 @@ public class NewsTest {
     @Description("При создании новости c пустыми полями должен остаться на экране создания новости")
     @Test
     public void shouldStayOnNewsCreationScreenWhenCreatingNewsWithEmptyFields() {
-        authorization.loginSuccessful();
         appBar.switchToNews();
         news.switchControlPanelNews();
         controlPanelNews.addNews();
@@ -177,7 +173,6 @@ public class NewsTest {
     @Description("После редактирования новость должна отредактироваться, проверяем изменение темы")
     @Test
     public void shouldEditTheNewsAfterEditing() {
-        authorization.loginSuccessful();
         appBar.switchToNews();
         news.switchControlPanelNews();
         controlPanelNews.addNews();
@@ -207,7 +202,6 @@ public class NewsTest {
     @Description("После удаления новости c указанной темой не должно быть в панели управления новостей")
     @Test
     public void shouldNewsBeDeletedAfterDeletion() {
-        authorization.loginSuccessful();
         appBar.switchToNews();
         news.switchControlPanelNews();
         controlPanelNews.addNews();

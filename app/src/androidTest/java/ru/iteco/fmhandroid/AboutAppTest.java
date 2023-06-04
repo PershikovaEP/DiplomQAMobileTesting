@@ -51,8 +51,8 @@ public class AboutAppTest {
     @Before
     public void setUp() {
         onView(isRoot()).perform(waitDisplayed(appBar.getAppBarFragmentMain(), 5000));
-        if (main.isDisplayedButtonProfile()) {
-            appBar.pressOut();
+        if (!main.isDisplayedButtonProfile()) {
+            authorization.loginSuccessful();
         }
     }
 
@@ -62,7 +62,6 @@ public class AboutAppTest {
     @Description("Должна открыться политика конфиденциальности")
     @Test
     public void shouldOpenPrivacyPolicy() {
-        authorization.loginSuccessful();
         appBar.switchToAboutApp();
         aboutApp.intentPrivatePolicy(urlPrivacyPolicy);
         aboutApp.back();
@@ -75,7 +74,6 @@ public class AboutAppTest {
     @Description("Должно открыться пользовательское соглашение")
     @Test
     public void shouldOpenTermsOfUse() {
-        authorization.loginSuccessful();
         appBar.switchToAboutApp();
         aboutApp.intentTermOfUse(urlTermsOfUse);
         aboutApp.back();

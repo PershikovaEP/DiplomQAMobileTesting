@@ -19,6 +19,7 @@ import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
 public class CreateClaims {
+
     private final ViewInteraction title = onView(withId(R.id.title_edit_text));
     private final ViewInteraction executor = onView(withId(R.id.executor_drop_menu_auto_complete_text_view));
     private final ViewInteraction date = onView(withId(R.id.date_in_plan_text_input_edit_text));
@@ -72,6 +73,7 @@ public class CreateClaims {
     public void pressSave() {
         closeSoftKeyboard();
         scrollTo();
+        onView(isRoot()).perform(waitDisplayed(buttonSave, 5000));
         save.check(matches(isDisplayed()));
         save.perform(scrollTo()).perform(click());
     }
@@ -101,7 +103,7 @@ public class CreateClaims {
         pressSave();
     }
 
-    @Step("Проверка видимости элемента с текстом Создание")
+    @Step("Проверка нахождения на экране Создание заявки")
     public void checkPageCreatClaims() {
         textToScreen.check(matches(isDisplayed()));
         textToScreen.check(matches(withText("Создание")));

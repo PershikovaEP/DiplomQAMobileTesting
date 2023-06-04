@@ -53,8 +53,8 @@ public class ThematicArticleTest {
     @Before
     public void setUp() {
         onView(isRoot()).perform(waitDisplayed(appBar.getAppBarFragmentMain(), 5000));
-        if (main.isDisplayedButtonProfile()) {
-            appBar.pressOut();
+        if (!main.isDisplayedButtonProfile()) {
+            authorization.loginSuccessful();
         }
     }
 
@@ -64,10 +64,7 @@ public class ThematicArticleTest {
     @Description("Должна открыться страница с тематическими статьями")
     @Test
     public void shouldOpenPageWithThematicArticles() {
-        authorization.loginSuccessful();
         appBar.switchToOurMission();
-
-        ourMission.getTextScreen().check(matches(isDisplayed()));
-        ourMission.getTextScreen().check(matches(withText("Главное - жить любя")));
-    }
+        ourMission.textScreenCheckIsDisplayed();
+     }
 }

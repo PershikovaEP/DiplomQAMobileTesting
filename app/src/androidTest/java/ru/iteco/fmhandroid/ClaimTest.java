@@ -68,8 +68,8 @@ public class ClaimTest {
     @Before
     public void setUp() {
         onView(isRoot()).perform(waitDisplayed(appBar.getAppBarFragmentMain(), 5000));
-        if (main.isDisplayedButtonProfile()) {
-            appBar.pressOut();
+        if (!main.isDisplayedButtonProfile()) {
+            authorization.loginSuccessful();
         }
     }
 
@@ -79,7 +79,6 @@ public class ClaimTest {
     @Description("Должна создаться заявка с указанной темой на экране заявок")
     @Test
     public void shouldBeMadeClaims() {
-        authorization.loginSuccessful();
         appBar.switchToClaims();
         claims.pressAddClaim();
         String title = "Создание заявки";
@@ -88,9 +87,7 @@ public class ClaimTest {
         createClaims.addDate(utils.currentDate());
         createClaims.addTime(time);
         createClaims.addDescription(description);
-        onView(isRoot()).perform(waitDisplayed(createClaims.getButtonSave(), 5000));
         createClaims.pressSave();
-
         claims.searchClaimsAndCheckIsDisplayed(title);
 
     }
@@ -101,7 +98,6 @@ public class ClaimTest {
     @Description("При создании заявки с плановой датой в прошлом должен остаться на экране создания заявки")
     @Test
     public void shouldStayOnClaimsCreationScreenWhenCreatingClaimsInPast() {
-        authorization.loginSuccessful();
         appBar.switchToClaims();
         claims.pressAddClaim();
         String title = "Создание заявки в прошлом";
@@ -110,9 +106,7 @@ public class ClaimTest {
         createClaims.addDate(lastDate);
         createClaims.addTime(time);
         createClaims.addDescription(description);
-        onView(isRoot()).perform(waitDisplayed(createClaims.getButtonSave(), 5000));
         createClaims.pressSave();
-
         createClaims.checkPageCreatClaims();
 
     }
@@ -123,7 +117,6 @@ public class ClaimTest {
     @Description("При создании заявки с плановой датой в прошлом должен остаться на экране создания заявки")
     @Test
     public void shouldStayOnClaimsCreationScreenWhenCreatingAClaimsStoryAfter5Years() {
-        authorization.loginSuccessful();
         appBar.switchToClaims();
         claims.pressAddClaim();
         String title = "Создание заявки в будущем";
@@ -133,9 +126,7 @@ public class ClaimTest {
         createClaims.addTime(time);
         createClaims.addDescription(description);
         createClaims.pressSave();
-
         createClaims.checkPageCreatClaims();
-
     }
 
     @Severity(value = SeverityLevel.CRITICAL)
@@ -144,15 +135,11 @@ public class ClaimTest {
     @Description("При создании заявки с пустыми полями должен остаться на экране создания заявки")
     @Test
     public void shouldStayOnClaimsCreationScreenWhenCreatingClaimsWithEmptyFields() {
-        authorization.loginSuccessful();
         appBar.switchToClaims();
         claims.pressAddClaim();
         createClaims.pressSave();
         createClaims.pressOk();
-
         createClaims.checkPageCreatClaims();
-
-
     }
 
     @Severity(value = SeverityLevel.NORMAL)
@@ -161,7 +148,6 @@ public class ClaimTest {
     @Description("После редактирования заявки заявка должна отредактироваться (проверяем, что на экране открытой заявки изменилась тема)")
     @Test
     public void shouldEditTheClaimsAfterEditing() {
-        authorization.loginSuccessful();
         appBar.switchToClaims();
         claims.pressAddClaim();
         String title = "Создание заявки для редактирования";
@@ -174,12 +160,8 @@ public class ClaimTest {
         editClaims.editDate(utils.dateMore1Month());
         editClaims.editTime(editTime);
         editClaims.editDescription(editDescription);
-        onView(isRoot()).perform(waitDisplayed(editClaims.getButtonSave(), 5000));
         editClaims.pressSave();
-
-        openClaims.searchElementAndCheckIsDisplayed(editTitle);
-
-
+        openClaims.searchTitleAndCheckIsDisplayed(editTitle);
     }
 
     @Severity(value = SeverityLevel.NORMAL)
@@ -188,7 +170,6 @@ public class ClaimTest {
     @Description("После отмены статус заявки изменится на отменена")
     @Test
     public void shouldChangeStatusOfClaimsToCanceled () {
-        authorization.loginSuccessful();
         appBar.switchToClaims();
         claims.pressAddClaim();
         String title = "Создание заявки для отмены";
@@ -196,10 +177,8 @@ public class ClaimTest {
         claims.searchClaimsAndSwitch(title);
         openClaims.statusClaims("Открыта");
         openClaims.pressStatusClaims();
-        openClaims.getStatusCanceled().perform(click());
+        openClaims.pressStatusCanceled();
         openClaims.statusClaims("Отменена");
-
-
     }
 
     @Severity(value = SeverityLevel.CRITICAL)
@@ -208,24 +187,17 @@ public class ClaimTest {
     @Description("После исполнения статус заявки изменится на исполнена, появится комментарий")
     @Test
     public void shouldChangeStatusOfClaimsToComplited() {
-        authorization.loginSuccessful();
         appBar.switchToClaims();
         claims.pressAddClaim();
         String title = "Создание заявки для исполнения";
         createClaims.createClaims(title, executor, utils.currentDate(), time, description );
         claims.searchClaimsAndSwitch(title);
-
         openClaims.statusClaims("В работе");
-
         openClaims.pressStatusClaims();
-        openClaims.getStatusCompleted().perform(click());
-
+        openClaims.pressStatusCompleted();
         openClaims.addComment(comment);
         openClaims.pressOk();
-
         openClaims.statusClaims("Выполнена");
-        openClaims.searchElementAndCheckIsDisplayed(comment);
-
-
+        openClaims.commentCheckWithText(comment);
     }
 }
