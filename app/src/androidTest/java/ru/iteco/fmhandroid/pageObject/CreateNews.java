@@ -7,11 +7,15 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
+
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
 public class CreateNews {
@@ -22,6 +26,10 @@ public class CreateNews {
     private final ViewInteraction date = onView(withId(R.id.news_item_publish_date_text_input_edit_text));
     private final ViewInteraction description = onView(withId(R.id.news_item_description_text_input_edit_text));
     private final ViewInteraction save = onView(withId(R.id.save_button));
+    private final int buttonSave = R.id.save_button;
+    public int getButtonSave() {
+        return buttonSave;
+    }
 
     private final ViewInteraction cancel = onView(withId(R.id.cancel_button));
     private final ViewInteraction textToScreen = onView(withId(R.id.custom_app_bar_title_text_view));
@@ -32,38 +40,45 @@ public class CreateNews {
         return textToScreen;
     }
 
+    @Step("Ввод в поле категория {text}")
     public void addCategory(String text) {
         category.check(matches(isDisplayed()));
         category.perform(replaceText(text), closeSoftKeyboard());
     }
 
+    @Step("Ввод в поле заголовок {text}")
     public void addTitle(String text) {
         title.check(matches(isDisplayed()));
         title.perform(replaceText(text), closeSoftKeyboard());
     }
 
+    @Step("Ввод в поле дата {text}")
     public void addDate(String text) {
         date.check(matches(isDisplayed()));
         date.perform(replaceText(text), closeSoftKeyboard());
     }
 
+    @Step("Ввод в поле время {text}")
     public void addTime(String text) {
         time.check(matches(isDisplayed()));
         time.perform(replaceText(text), closeSoftKeyboard());
 
     }
 
+    @Step("Ввод в поле описание {text}")
     public void addDescription(String text) {
         description.check(matches(isDisplayed()));
         description.perform(replaceText(text), closeSoftKeyboard());
     }
 
+    @Step("Нажатие на кнопку Сохранить")
     public void pressSave() {
         closeSoftKeyboard();
         save.check(matches(isDisplayed()));
         save.perform(scrollTo()).perform(click());
     }
 
+    @Step("Нажатие на кнопку Отмена")
     public void pressCancel() {
         closeSoftKeyboard();
         cancel.check(matches(isDisplayed()));
@@ -71,17 +86,20 @@ public class CreateNews {
         pressOk();
     }
 
+    @Step("Нажатие на кнопку ОК")
     public void pressOk() {
         buttonOk.check(matches(isDisplayed()));
         buttonOk.perform(click());
     }
 
+    @Step("Создание новости с полями: категория {category}, заголовок {title}, дата {date}, время {time}, описание {description}")
     public void createNews(String category, String title, String date, String time, String description) {
         addCategory(category);
         addTitle(title);
         addDate(date);
         addTime(time);
         addDescription(description);
+        onView(isRoot()).perform(waitDisplayed(buttonSave, 5000));
         pressSave();
     }
 

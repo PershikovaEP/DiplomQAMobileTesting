@@ -11,6 +11,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
 public class OpenClaims {
@@ -41,15 +42,15 @@ public class OpenClaims {
         return statusCanceled;
     }
 
-    public ViewInteraction getTextTitle() {
-        return textTitle;
-    }
 
+
+    @Step("Нажатие на кнопку Редактировать Заявку")
     public void pressEditClaims() {
         buttonEdit.check(matches(isDisplayed()));
         buttonEdit.perform(click());
     }
 
+    @Step("Нажатие на кнопку Статус заявки")
     public void pressStatusClaims() {
         buttonStatus.check(matches(isDisplayed()));
         buttonStatus.perform(click());
@@ -57,14 +58,28 @@ public class OpenClaims {
 
 
 
+    @Step("Ввод в поле комментарий {text}")
     public void addComment(String text) {
         addComment.check(matches(isDisplayed()));
         addComment.perform(replaceText(text), closeSoftKeyboard());
     }
 
+    @Step("Нажатие на кнопку ОК")
     public void pressOk() {
         buttonOk.check(matches(isDisplayed()));
         buttonOk.perform(click());
+    }
+
+    @Step("Поиск элемента, содержащего {text}, и проверка его видимости")
+    public void searchElementAndCheckIsDisplayed(String text) {
+        ViewInteraction textClaims = onView(withText(text));
+        textClaims.check(matches(isDisplayed()));
+    }
+
+    @Step("Проверка статуса заявки")
+    public void statusClaims(String text) {
+        textTitle.check(matches(isDisplayed()));
+        textTitle.check(matches(withText(text)));
     }
 
 

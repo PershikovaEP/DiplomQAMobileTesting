@@ -11,6 +11,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
 public class EditNews {
@@ -23,33 +24,44 @@ public class EditNews {
     private final ViewInteraction editDescription = onView(withId(R.id.news_item_description_text_input_edit_text));
     private final ViewInteraction save = onView(withId(R.id.save_button));
 
+    private final int buttonSave = R.id.save_button;
+    public int getButtonSave() {
+        return buttonSave;
+    }
 
+
+    @Step("Редактирование значения в поле категория на {text}")
     public void editCategory(String text) {
         editCategory.check(matches(isDisplayed()));
         editCategory.perform(replaceText(text), closeSoftKeyboard());
     }
 
+    @Step("Редактирование значения в поле заголовок на {text}")
     public void editTitle(String text) {
         editTitle.check(matches(isDisplayed()));
         editTitle.perform(replaceText(text), closeSoftKeyboard());
     }
 
+    @Step("Редактирование значения в поле дата на {text}")
     public void editDate(String text) {
         editDate.check(matches(isDisplayed()));
         editDate.perform(replaceText(text), closeSoftKeyboard());
     }
 
+    @Step("Редактирование значения в поле время на {text}")
     public void editTime(String text) {
         editTime.check(matches(isDisplayed()));
         editTime.perform(replaceText(text), closeSoftKeyboard());
 
     }
 
+    @Step("Редактирование значения в поле описание на {text}")
     public void editDescription(String text) {
         editDescription.check(matches(isDisplayed()));
         editDescription.perform(replaceText(text), closeSoftKeyboard());
     }
 
+    @Step("Нажатие на кнопку Сохранить")
     public void pressSave() {
         closeSoftKeyboard();
         save.check(matches(isDisplayed()));

@@ -16,7 +16,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
-import static ru.iteco.fmhandroid.ui.utils.Utils.waitDisplayed;
+import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +30,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 
+import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
 
@@ -43,14 +44,11 @@ public class Authorization {
 
     private final ViewInteraction textViewAuth = onView(withText("Авторизация"));
 
-    public ViewInteraction getTextViewAuth() {
-        return textViewAuth;
-    }
-
     public int getInputLogin() {
         return inputLogin;
     }
 
+    @Step("Ввод в поле логин {login}")
     public void inputLogin(String login) {
         ViewInteraction textInputEditText = onView(allOf(
                 isDescendantOfA(withId(inputLogin)),
@@ -60,6 +58,7 @@ public class Authorization {
 
     }
 
+    @Step("Ввод в поле пароль {password}")
     public void inputPassword(String password) {
         ViewInteraction textInputEditText3 = onView(allOf(
                 isDescendantOfA(withId(inputPassword)),
@@ -68,18 +67,25 @@ public class Authorization {
         textInputEditText3.perform(replaceText(password), closeSoftKeyboard());
     }
 
+    @Step("Нажатие на кнопку ВОЙТИ")
     public void pressButton() {
         materialButton.check(matches(isDisplayed()));
         materialButton.perform(click());
     }
 
+    @Step("Успешная авторизация пользователя")
     public void loginSuccessful() {
         inputLogin("login2");
         inputPassword("password2");
         pressButton();
         onView(isRoot()).perform(waitDisplayed(appBar.getPressProfile(), 6000));
-        main.getTextViewMainNews().check(matches(isDisplayed()));
-        main.getTextViewMainNews().check(matches(withText("Новости")));
+        main.checkNews();
+    }
+
+    @Step("Проверка видимости элемента с текстом Авторизация")
+    public void checkAuth() {
+        textViewAuth.check(matches(isDisplayed()));
+        textViewAuth.check(matches(withText("Авторизация")));
     }
 
 }

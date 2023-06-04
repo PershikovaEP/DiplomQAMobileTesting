@@ -11,6 +11,11 @@ public class OurMission {
 
     private final ViewInteraction textScreen = onView(withId(R.id.our_mission_title_text_view));
 
+    private int text = R.id.our_mission_title_text_view;
+
+    public int getText() {
+        return text;
+    }
     public ViewInteraction getTextScreen() {
         return textScreen;
     }

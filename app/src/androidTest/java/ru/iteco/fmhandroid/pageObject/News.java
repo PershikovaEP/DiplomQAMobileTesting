@@ -9,15 +9,22 @@ import static org.hamcrest.Matchers.allOf;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
 public class News {
-    private final ViewInteraction buttonControlPanelNews = onView(withId(R.id.edit_news_material_button));
+
+    private final int buttonControlPanelNews = R.id.edit_news_material_button;
+
+    public int getButtonControlPanelNews() {
+        return buttonControlPanelNews;
+    }
 
 
+    @Step("Нажатие на кнопку Панель управления новостями")
     public void switchControlPanelNews() {
-        buttonControlPanelNews.check(matches(isDisplayed()));
-        buttonControlPanelNews.perform(click());
+        onView(withId(buttonControlPanelNews)).check(matches(isDisplayed()));
+        onView(withId(buttonControlPanelNews)).perform(click());
     }
 
 

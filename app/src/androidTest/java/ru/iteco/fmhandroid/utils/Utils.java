@@ -1,4 +1,4 @@
-package ru.iteco.fmhandroid.ui.utils;
+package ru.iteco.fmhandroid.Utils;
 
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
@@ -81,6 +81,7 @@ public class Utils {
                 + '.' + Integer.toString(LocalDate.now().getYear());
         return currentDate;
     }
+
 
     }
 
