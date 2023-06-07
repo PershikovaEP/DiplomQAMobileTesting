@@ -90,10 +90,7 @@ public class NewsTest {
         createNews.addDate(utils.currentDate());
         createNews.addTime(time);
         createNews.addDescription(description);
-
-        onView(isRoot()).perform(waitDisplayed(createNews.getButtonSave(), 5000));
         createNews.pressSave();
-
         controlPanelNews.searchNewsAndCheckIsDisplayed(text);
 
     }
@@ -113,13 +110,8 @@ public class NewsTest {
         createNews.addDate(lastDate);
         createNews.addTime(time);
         createNews.addDescription(description);
-        onView(isRoot()).perform(waitDisplayed(createNews.getButtonSave(), 5000));
         createNews.pressSave();
-
-        createNews.getTextToScreen().check(matches(isDisplayed()));
-        createNews.getTextToScreen().check(matches(withText("Создание")));
-
-        createNews.pressCancel();
+        createNews.checkPageCreatNews();
 
     }
 
@@ -138,14 +130,8 @@ public class NewsTest {
         createNews.addDate(utils.dateMore5Year());
         createNews.addTime(time);
         createNews.addDescription(description);
-        onView(isRoot()).perform(waitDisplayed(createNews.getButtonSave(), 5000));
         createNews.pressSave();
-
-        createNews.getTextToScreen().check(matches(isDisplayed()));
-        createNews.getTextToScreen().check(matches(withText("Создание")));
-
-        createNews.pressCancel();
-
+        createNews.checkPageCreatNews();
     }
 
     @Severity(value = SeverityLevel.CRITICAL)
@@ -159,11 +145,7 @@ public class NewsTest {
         controlPanelNews.addNews();
         onView(isRoot()).perform(waitDisplayed(createNews.getButtonSave(), 5000));
         createNews.pressSave();
-
-        createNews.getTextToScreen().check(matches(isDisplayed()));
-        createNews.getTextToScreen().check(matches(withText("Создание")));
-
-        createNews.pressCancel();
+        createNews.checkPageCreatNews();
 
     }
 
@@ -178,8 +160,7 @@ public class NewsTest {
         controlPanelNews.addNews();
         String title = "Создание";
         createNews.createNews(category, title, utils.currentDate(), time, description );
-        ViewInteraction textTitle = onView(withText(title));
-        textTitle.check(matches(isDisplayed()));
+        controlPanelNews.searchNewsAndCheckIsDisplayed(title);
 
         controlPanelNews.pressEditPanelNews();
         editNews.editCategory(editCategory);
@@ -188,11 +169,8 @@ public class NewsTest {
         editNews.editDate(utils.dateMore1Month());
         editNews.editTime(editTime);
         editNews.editDescription(editDescription);
-        onView(isRoot()).perform(waitDisplayed(createNews.getButtonSave(), 5000));
         editNews.pressSave();
-
-        ViewInteraction editTextTitle = onView(withText(editTitle));
-        editTextTitle.check(matches(isDisplayed()));
+        controlPanelNews.searchNewsAndCheckIsDisplayed(editTitle);
 
     }
 
@@ -207,11 +185,9 @@ public class NewsTest {
         controlPanelNews.addNews();
         String title = "Удаление новости";
         createNews.createNews(category, title, utils.currentDate(), time, description);
-        ViewInteraction textTitle = onView(withText(title));
-        textTitle.check(matches(isDisplayed()));
-
+        controlPanelNews.searchNewsAndCheckIsDisplayed(title);
         controlPanelNews.deleteNews();
-        textTitle.check(doesNotExist());
+        controlPanelNews.checkDeletedNews(title);
 
     }
 }

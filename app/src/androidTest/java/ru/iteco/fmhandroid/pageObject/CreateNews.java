@@ -35,11 +35,6 @@ public class CreateNews {
     private final ViewInteraction textToScreen = onView(withId(R.id.custom_app_bar_title_text_view));
     private final ViewInteraction buttonOk = onView(withId(android.R.id.button1));
 
-
-    public ViewInteraction getTextToScreen() {
-        return textToScreen;
-    }
-
     @Step("Ввод в поле категория {text}")
     public void addCategory(String text) {
         category.check(matches(isDisplayed()));
@@ -74,16 +69,10 @@ public class CreateNews {
     @Step("Нажатие на кнопку Сохранить")
     public void pressSave() {
         closeSoftKeyboard();
+        scrollTo();
+        onView(isRoot()).perform(waitDisplayed(buttonSave, 10000));
         save.check(matches(isDisplayed()));
         save.perform(scrollTo()).perform(click());
-    }
-
-    @Step("Нажатие на кнопку Отмена")
-    public void pressCancel() {
-        closeSoftKeyboard();
-        cancel.check(matches(isDisplayed()));
-        cancel.perform(scrollTo(), click());
-        pressOk();
     }
 
     @Step("Нажатие на кнопку ОК")
@@ -103,5 +92,10 @@ public class CreateNews {
         pressSave();
     }
 
+    @Step("Проверка нахождения на экране Создание новости")
+    public void checkPageCreatNews() {
+        textToScreen.check(matches(isDisplayed()));
+        textToScreen.check(matches(withText("Создание")));
+    }
 
 }

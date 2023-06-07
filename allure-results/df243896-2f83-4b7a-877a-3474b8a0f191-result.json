@@ -1,0 +1,65 @@
+{
+    "name": "shouldRemainOnTheMainScreenWhenEnteringDataUsingCase",
+    "start": 1686166489128,
+    "stop": 1686166493155,
+    "stage": "finished",
+    "description": "После авторизации с использованием регистра должен остаться на экране авторизации",
+    "descriptionHtml": null,
+    "status": "passed",
+    "statusDetails": null,
+    "steps": [
+    ],
+    "attachments": [
+    ],
+    "parameters": [
+    ],
+    "uuid": "df243896-2f83-4b7a-877a-3474b8a0f191",
+    "historyId": "1b3378ac6fe3008bf7ae95222bc2d10f",
+    "fullName": "ru.iteco.fmhandroid.AuthTest.shouldRemainOnTheMainScreenWhenEnteringDataUsingCase",
+    "labels": [
+        {
+            "name": "package",
+            "value": "ru.iteco.fmhandroid"
+        },
+        {
+            "name": "testClass",
+            "value": "ru.iteco.fmhandroid.AuthTest"
+        },
+        {
+            "name": "testMethod",
+            "value": "shouldRemainOnTheMainScreenWhenEnteringDataUsingCase"
+        },
+        {
+            "name": "suite",
+            "value": "ru.iteco.fmhandroid.AuthTest"
+        },
+        {
+            "name": "host",
+            "value": "localhost"
+        },
+        {
+            "name": "thread",
+            "value": "Instr: androidx.test.runner.AndroidJUnitRunner(5137)"
+        },
+        {
+            "name": "framework",
+            "value": "junit4"
+        },
+        {
+            "name": "language",
+            "value": "kotlin"
+        },
+        {
+            "name": "epic",
+            "value": "Авторизация"
+        },
+        {
+            "name": "feature",
+            "value": "Авторизация невалидного пользователя при использовании регистра"
+        },
+        {
+            "name": "severity",
+            "value": "critical"
+        }
+    ]
+}

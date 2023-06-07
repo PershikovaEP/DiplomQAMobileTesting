@@ -29,6 +29,8 @@ public class Main {
         return containerNews;
     }
 
+    @Step("Метод, позволяющий определить в каком состоянии находится система: " +
+            "если true, то на главном экране, если false - на странице авторизации")
     public Boolean isDisplayedButtonProfile() {
         try {
             onView(withId(containerNews)).check(matches(isDisplayed()));

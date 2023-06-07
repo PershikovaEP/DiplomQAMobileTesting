@@ -26,7 +26,6 @@ public class CreateClaims {
     private final ViewInteraction time = onView(withId(R.id.time_in_plan_text_input_edit_text));
     private final ViewInteraction description = onView(withId(R.id.description_edit_text));
     private final ViewInteraction save = onView(withId(R.id.save_button));
-    private final ViewInteraction cancel = onView(withId(R.id.cancel_button));
 
     private final ViewInteraction textToScreen = onView(withId(R.id.custom_app_bar_title_text_view));
     private final ViewInteraction buttonOk = onView(withId(android.R.id.button1));
@@ -73,7 +72,7 @@ public class CreateClaims {
     public void pressSave() {
         closeSoftKeyboard();
         scrollTo();
-        onView(isRoot()).perform(waitDisplayed(buttonSave, 5000));
+        onView(isRoot()).perform(waitDisplayed(buttonSave, 10000));
         save.check(matches(isDisplayed()));
         save.perform(scrollTo()).perform(click());
     }
@@ -82,14 +81,6 @@ public class CreateClaims {
     public void pressOk() {
         buttonOk.check(matches(isDisplayed()));
         buttonOk.perform(click());
-    }
-
-    @Step("Нажатие на кнопку Отмена")
-    public void pressCancel() {
-        closeSoftKeyboard();
-        cancel.check(matches(isDisplayed()));
-        cancel.perform(scrollTo(), click());
-        pressOk();
     }
 
     @Step("Создание заявки с полями: тема {title}, исполнитель {executor}, дата {date}, время {time}, описание {description}")

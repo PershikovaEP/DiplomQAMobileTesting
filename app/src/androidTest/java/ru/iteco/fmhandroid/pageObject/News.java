@@ -4,8 +4,11 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
+
+import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
 import androidx.test.espresso.ViewInteraction;
 
@@ -14,6 +17,7 @@ import ru.iteco.fmhandroid.R;
 
 public class News {
 
+   ControlPanelNews controlPanelNews = new ControlPanelNews();
     private final int buttonControlPanelNews = R.id.edit_news_material_button;
 
     public int getButtonControlPanelNews() {
@@ -21,10 +25,11 @@ public class News {
     }
 
 
-    @Step("Нажатие на кнопку Панель управления новостями")
+    @Step("Переход на Панель управления новостями")
     public void switchControlPanelNews() {
         onView(withId(buttonControlPanelNews)).check(matches(isDisplayed()));
         onView(withId(buttonControlPanelNews)).perform(click());
+        onView(isRoot()).perform(waitDisplayed(controlPanelNews.getButtonAddNews(), 6000));
     }
 
 
