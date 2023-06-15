@@ -30,6 +30,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 
+import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
@@ -50,6 +51,7 @@ public class Authorization {
 
     @Step("Ввод в поле логин {login}")
     public void inputLogin(String login) {
+        Allure.step("Ввод в поле логин {login}");
         ViewInteraction textInputEditText = onView(allOf(
                 isDescendantOfA(withId(inputLogin)),
                 isAssignableFrom(EditText.class)));
@@ -60,6 +62,7 @@ public class Authorization {
 
     @Step("Ввод в поле пароль {password}")
     public void inputPassword(String password) {
+        Allure.step("Ввод в поле пароль {password}");
         ViewInteraction textInputEditText3 = onView(allOf(
                 isDescendantOfA(withId(inputPassword)),
                 isAssignableFrom(EditText.class)));;
@@ -69,12 +72,14 @@ public class Authorization {
 
     @Step("Нажатие на кнопку ВОЙТИ")
     public void pressButton() {
+        Allure.step("Нажатие на кнопку ВОЙТИ");
         materialButton.check(matches(isDisplayed()));
         materialButton.perform(click());
     }
 
     @Step("Успешная авторизация пользователя")
     public void loginSuccessful() {
+        Allure.step("Успешная авторизация пользователя");
         inputLogin("login2");
         inputPassword("password2");
         pressButton();
@@ -84,6 +89,7 @@ public class Authorization {
 
     @Step("Проверка видимости элемента с текстом Авторизация")
     public void checkAuth() {
+        Allure.step("Проверка видимости элемента с текстом Авторизация");
         textViewAuth.check(matches(isDisplayed()));
         textViewAuth.check(matches(withText("Авторизация")));
     }

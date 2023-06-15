@@ -14,6 +14,7 @@ import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
@@ -37,6 +38,7 @@ public class OpenClaims {
 
     @Step("Нажатие на кнопку Редактировать Заявку")
     public void pressEditClaims() {
+        Allure.step("Нажатие на кнопку Редактировать Заявку");
         onView(withId(buttonEdit)).check(matches(isDisplayed()));
         onView(withId(buttonEdit)).perform(click());
         onView(isRoot()).perform(waitDisplayed(editClaims.getButtonSave(), 5000));
@@ -44,24 +46,28 @@ public class OpenClaims {
 
     @Step("Нажатие на кнопку Статус заявки")
     public void pressStatusClaims() {
+        Allure.step("Нажатие на кнопку Статус заявки");
         buttonStatus.check(matches(isDisplayed()));
         buttonStatus.perform(click());
     }
 
     @Step("Ввод в поле комментарий {text}")
     public void addComment(String text) {
+        Allure.step("Ввод в поле комментарий {text}");
         addComment.check(matches(isDisplayed()));
         addComment.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Нажатие на кнопку ОК")
     public void pressOk() {
+        Allure.step("Нажатие на кнопку ОК");
         buttonOk.check(matches(isDisplayed()));
         buttonOk.perform(click());
     }
 
     @Step("Поиск темы, содержащей {text}, и проверка её видимости")
     public void searchTitleAndCheckIsDisplayed(String text) {
+        Allure.step("Поиск темы, содержащей {text}, и проверка её видимости");
         onView(isRoot()).perform(waitDisplayed(buttonEdit, 5000));
         ViewInteraction textClaims = onView(withText(text));
         textClaims.check(matches(isDisplayed()));
@@ -69,22 +75,26 @@ public class OpenClaims {
 
     @Step("Проверка соответсвия комментария введенному тексту")
     public void commentCheckWithText(String text) {
+        Allure.step("Проверка соответсвия комментария введенному тексту");
         textComment.check(matches(isDisplayed()));
         textComment.check(matches(withText(text)));
     }
 
     @Step("Проверка статуса заявки")
     public void statusClaims(String text) {
+        Allure.step("Проверка статуса заявки");
         textStatus.check(matches(isDisplayed()));
         textStatus.check(matches(withText(text)));
     }
 
     @Step("Изменение статуса заявки на Отменена")
     public void pressStatusCanceled() {
+        Allure.step("Изменение статуса заявки на Отменена");
         statusCanceled.perform(click());
     }
     @Step("Изменение статуса заявки на Выполнена")
     public void pressStatusCompleted() {
+        Allure.step("Изменение статуса заявки на Выполнена");
         statusCompleted.perform(click());
     }
 

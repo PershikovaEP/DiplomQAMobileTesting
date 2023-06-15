@@ -37,14 +37,8 @@ import ru.iteco.fmhandroid.ui.AppActivity;
 public class ThematicArticleTest {
     Authorization authorization = new Authorization();
     Main main = new Main();
-
     AppBar appBar = new AppBar();
-
-
     OurMission ourMission = new OurMission();
-
-
-
 
     @Rule
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =

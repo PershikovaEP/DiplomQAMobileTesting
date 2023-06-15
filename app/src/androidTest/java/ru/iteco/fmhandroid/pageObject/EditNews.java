@@ -11,6 +11,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
@@ -32,24 +33,28 @@ public class EditNews {
 
     @Step("Редактирование значения в поле категория на {text}")
     public void editCategory(String text) {
+        Allure.step("Редактирование значения в поле категория на {text}");
         editCategory.check(matches(isDisplayed()));
         editCategory.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Редактирование значения в поле заголовок на {text}")
     public void editTitle(String text) {
+        Allure.step("Редактирование значения в поле заголовок на {text}");
         editTitle.check(matches(isDisplayed()));
         editTitle.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Редактирование значения в поле дата на {text}")
     public void editDate(String text) {
+        Allure.step("Редактирование значения в поле дата на {text}");
         editDate.check(matches(isDisplayed()));
         editDate.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Редактирование значения в поле время на {text}")
     public void editTime(String text) {
+        Allure.step("Редактирование значения в поле время на {text}");
         editTime.check(matches(isDisplayed()));
         editTime.perform(replaceText(text), closeSoftKeyboard());
 
@@ -57,12 +62,14 @@ public class EditNews {
 
     @Step("Редактирование значения в поле описание на {text}")
     public void editDescription(String text) {
+        Allure.step("Редактирование значения в поле описание на {text}");
         editDescription.check(matches(isDisplayed()));
         editDescription.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Нажатие на кнопку Сохранить")
     public void pressSave() {
+        Allure.step("Нажатие на кнопку Сохранить");
         closeSoftKeyboard();
         save.check(matches(isDisplayed()));
         save.perform(scrollTo(), click());

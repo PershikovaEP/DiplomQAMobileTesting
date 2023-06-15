@@ -41,8 +41,8 @@ public class AboutAppTest {
     Main main = new Main();
 
     AboutApp aboutApp = new AboutApp();
-    String urlPrivacyPolicy = "https://vhospice.org/#/privacy-policy";
-    String urlTermsOfUse = "https://vhospice.org/#/terms-of-use";
+    private final String urlPrivacyPolicy = "https://vhospice.org/#/privacy-policy";
+    private final String urlTermsOfUse = "https://vhospice.org/#/terms-of-use";
 
     @Rule
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =

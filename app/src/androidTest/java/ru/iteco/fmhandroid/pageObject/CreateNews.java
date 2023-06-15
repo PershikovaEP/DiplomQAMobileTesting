@@ -15,6 +15,7 @@ import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
@@ -31,30 +32,30 @@ public class CreateNews {
         return buttonSave;
     }
 
-    private final ViewInteraction cancel = onView(withId(R.id.cancel_button));
-    private final ViewInteraction textToScreen = onView(withId(R.id.custom_app_bar_title_text_view));
-    private final ViewInteraction buttonOk = onView(withId(android.R.id.button1));
-
     @Step("Ввод в поле категория {text}")
     public void addCategory(String text) {
+        Allure.step("Ввод в поле категория {text}");
         category.check(matches(isDisplayed()));
         category.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Ввод в поле заголовок {text}")
     public void addTitle(String text) {
+        Allure.step("Ввод в поле заголовок {text}");
         title.check(matches(isDisplayed()));
         title.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Ввод в поле дата {text}")
     public void addDate(String text) {
+        Allure.step("Ввод в поле дата {text}");
         date.check(matches(isDisplayed()));
         date.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Ввод в поле время {text}")
     public void addTime(String text) {
+        Allure.step("Ввод в поле время {text}");
         time.check(matches(isDisplayed()));
         time.perform(replaceText(text), closeSoftKeyboard());
 
@@ -62,12 +63,14 @@ public class CreateNews {
 
     @Step("Ввод в поле описание {text}")
     public void addDescription(String text) {
+        Allure.step("Ввод в поле описание {text}");
         description.check(matches(isDisplayed()));
         description.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Нажатие на кнопку Сохранить")
     public void pressSave() {
+        Allure.step("Нажатие на кнопку Сохранить");
         closeSoftKeyboard();
         scrollTo();
         onView(isRoot()).perform(waitDisplayed(buttonSave, 10000));
@@ -75,14 +78,9 @@ public class CreateNews {
         save.perform(scrollTo()).perform(click());
     }
 
-    @Step("Нажатие на кнопку ОК")
-    public void pressOk() {
-        buttonOk.check(matches(isDisplayed()));
-        buttonOk.perform(click());
-    }
-
     @Step("Создание новости с полями: категория {category}, заголовок {title}, дата {date}, время {time}, описание {description}")
     public void createNews(String category, String title, String date, String time, String description) {
+        Allure.step("Создание новости с полями: категория {category}, заголовок {title}, дата {date}, время {time}, описание {description}");
         addCategory(category);
         addTitle(title);
         addDate(date);
@@ -92,10 +90,10 @@ public class CreateNews {
         pressSave();
     }
 
-    @Step("Проверка нахождения на экране Создание новости")
-    public void checkPageCreatNews() {
-        textToScreen.check(matches(isDisplayed()));
-        textToScreen.check(matches(withText("Создание")));
+    @Step("Проверка отображения ошибки")
+    public void checkErrorDisplay(String text) {
+        Allure.step("Проверка отображения ошибки");
+        onView(withText(text)).check(matches(isDisplayed()));
     }
 
 }

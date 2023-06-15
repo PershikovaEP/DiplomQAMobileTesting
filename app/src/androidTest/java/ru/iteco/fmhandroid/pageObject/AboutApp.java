@@ -12,6 +12,7 @@ import android.content.Intent;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.intent.Intents;
 
+import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
@@ -28,6 +29,7 @@ public class AboutApp {
 
     @Step("Проверка Intent пользовательского соглашения с url {url}")
     public void intentTermOfUse(String url) {
+        Allure.step("Проверка Intent пользовательского соглашения с url {url}");
         Intents.init();
         termsOfUse.perform(click());
         intended(hasAction(Intent.ACTION_VIEW));
@@ -35,8 +37,9 @@ public class AboutApp {
         Intents.release();
     }
 
-    @Step("Проверка Intent пользовательского соглашения с url {url}")
+    @Step("Проверка Intent политики конфиденциальности с url {url}")
     public void intentPrivatePolicy(String url) {
+        Allure.step("Проверка Intent политики конфиденциальности с url {url}");
         Intents.init();
         privacyPolicy.perform(click());
         intended(hasAction(Intent.ACTION_VIEW));
@@ -45,7 +48,9 @@ public class AboutApp {
     }
 
     @Step("Нажатие на кнопку Назад")
+
     public void back() {
+        Allure.step("Нажатие на кнопку Назад");
         onView(withId(buttonBack)).perform(click());
     }
 

@@ -12,6 +12,7 @@ import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
@@ -27,6 +28,7 @@ public class News {
 
     @Step("Переход на Панель управления новостями")
     public void switchControlPanelNews() {
+        Allure.step("Переход на Панель управления новостями");
         onView(withId(buttonControlPanelNews)).check(matches(isDisplayed()));
         onView(withId(buttonControlPanelNews)).perform(click());
         onView(isRoot()).perform(waitDisplayed(controlPanelNews.getButtonAddNews(), 6000));

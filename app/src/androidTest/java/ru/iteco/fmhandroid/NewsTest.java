@@ -54,13 +54,15 @@ public class NewsTest {
     EditNews editNews = new EditNews();
     Main main = new Main();
 
-    String category = "День рождения";
-    String lastDate = "01.01.2020";
-    String description = "тест";
-    String time = "12.00";
-    String editTime = "16.00";
-    String editDescription = "тест редактирование";
-    String editCategory = "Объявление";
+    private final String category = "День рождения";
+    private final String lastDate = "01.01.2020";
+    private final String description = "тест";
+    private final String time = "12:00";
+    private final String editTime = "16:00";
+    private final String editDescription = "тест редактирование";
+    private final String editCategory = "Объявление";
+    private final String textErrorWrongData = "Неверная дата";
+    private final String textErrorEmptyField = "Заполните пустые поля";
 
 
     @Rule
@@ -98,7 +100,7 @@ public class NewsTest {
     @Severity(value = SeverityLevel.CRITICAL)
     @Epic("Новости")
     @Feature("Создание новости с датой публикации в прошлом")
-    @Description("При создании новости в прошлом должен остаться на экране создания новости")
+    @Description("При создании новости в прошлом должна появляться ошибка")
     @Test
     public void shouldStayOnNewsCreationScreenWhenCreatingNewsInPast() {
         appBar.switchToNews();
@@ -111,14 +113,14 @@ public class NewsTest {
         createNews.addTime(time);
         createNews.addDescription(description);
         createNews.pressSave();
-        createNews.checkPageCreatNews();
+        createNews.checkErrorDisplay(textErrorWrongData);
 
     }
 
     @Severity(value = SeverityLevel.NORMAL)
     @Epic("Новости")
     @Feature("Создание новости с датой публикации спустя 5 лет")
-    @Description("При создании новости спустя 5 лет должен остаться на экране создания новости")
+    @Description("При создании новости спустя 5 лет должна появляться ошибка")
     @Test
     public void shouldStayOnNewsCreationScreenWhenCreatingANewsStoryAfter5Years() {
         appBar.switchToNews();
@@ -131,13 +133,13 @@ public class NewsTest {
         createNews.addTime(time);
         createNews.addDescription(description);
         createNews.pressSave();
-        createNews.checkPageCreatNews();
+        createNews.checkErrorDisplay(textErrorWrongData);
     }
 
     @Severity(value = SeverityLevel.CRITICAL)
     @Epic("Новости")
     @Feature("Создание новости с пустыми полями")
-    @Description("При создании новости c пустыми полями должен остаться на экране создания новости")
+    @Description("При создании новости c пустыми полями должна появляться ошибка")
     @Test
     public void shouldStayOnNewsCreationScreenWhenCreatingNewsWithEmptyFields() {
         appBar.switchToNews();
@@ -145,8 +147,7 @@ public class NewsTest {
         controlPanelNews.addNews();
         onView(isRoot()).perform(waitDisplayed(createNews.getButtonSave(), 5000));
         createNews.pressSave();
-        createNews.checkPageCreatNews();
-
+        createNews.checkErrorDisplay(textErrorEmptyField);
     }
 
     @Severity(value = SeverityLevel.NORMAL)
@@ -186,8 +187,8 @@ public class NewsTest {
         String title = "Удаление новости";
         createNews.createNews(category, title, utils.currentDate(), time, description);
         controlPanelNews.searchNewsAndCheckIsDisplayed(title);
-        controlPanelNews.deleteNews();
-        controlPanelNews.checkDeletedNews(title);
+        controlPanelNews.deleteNews(title);
+        controlPanelNews.checkDoesNotExistNews(title);
 
     }
 }

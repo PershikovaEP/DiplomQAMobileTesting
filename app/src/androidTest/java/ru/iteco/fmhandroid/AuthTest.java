@@ -36,15 +36,15 @@ public class AuthTest {
     Main main = new Main();
     AppBar appBar = new AppBar();
 
-    String succesLogin = "login2";
-    String succesPassword = "password2";
-    String registerLogin = "LOGIN2";
-    String registerPassword = "PASSWORD2";
-    String russianLogin = "логин2";
-    String russianPassword = "пассворд2";
-    String specSymbol = "lOGin #%@`<|&?>*";
-    String more50Symbol = "loginloginloginloginloginloginloginloginloginlogin";
-    String oneSymbol = "l";
+    private final String succesLogin = "login2";
+    private final String succesPassword = "password2";
+    private final String registerLogin = "LOGIN2";
+    private final String registerPassword = "PASSWORD2";
+    private final String russianLogin = "логин2";
+    private final String russianPassword = "пассворд2";
+    private final String specSymbol = "lOGin #%@`<|&?>*";
+    private final String more50Symbol = "loginloginloginloginloginloginloginloginloginlogin";
+    private final String oneSymbol = "l";
 
 
     @Rule

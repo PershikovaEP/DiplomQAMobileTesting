@@ -53,13 +53,16 @@ public class ClaimTest {
     EditClaims editClaims = new EditClaims();
     OpenClaims openClaims = new OpenClaims();
     Main main = new Main();
-    String executor = "Ivanov Ivan Ivanovich";
-    String lastDate = "01.01.2020";
-    String description = "тест";
-    String time = "12.00";
-    String editTime = "16.00";
-    String editDescription = "тест редактирование";
-    String comment = "заявка исполнена";
+    private final String executor = "Ivanov Ivan Ivanovich";
+    private final String lastDate = "01.01.2020";
+    private final String description = "тест";
+    private final String time = "12:00";
+    private final String editTime = "16:00";
+    private final String editDescription = "тест редактирование";
+    private final String comment = "заявка исполнена";
+
+    private final String textErrorWrongData = "Неверная дата";
+    private final String textErrorEmptyField = "Заполните пустые поля";
 
     @Rule
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =
@@ -89,13 +92,12 @@ public class ClaimTest {
         createClaims.addDescription(description);
         createClaims.pressSave();
         claims.searchClaimsAndCheckIsDisplayed(title);
-
     }
 
     @Severity(value = SeverityLevel.CRITICAL)
     @Epic("Заявки")
     @Feature("Создание заявки с плановой датой в прошлом")
-    @Description("При создании заявки с плановой датой в прошлом должен остаться на экране создания заявки")
+    @Description("При создании заявки с плановой датой в прошлом должна появляться ошибка")
     @Test
     public void shouldStayOnClaimsCreationScreenWhenCreatingClaimsInPast() {
         appBar.switchToClaims();
@@ -107,14 +109,14 @@ public class ClaimTest {
         createClaims.addTime(time);
         createClaims.addDescription(description);
         createClaims.pressSave();
-        createClaims.checkPageCreatClaims();
+        createClaims.checkErrorDisplay(textErrorWrongData);
 
     }
 
     @Severity(value = SeverityLevel.CRITICAL)
     @Epic("Заявки")
     @Feature("Создание заявки с плановой датой спустя 5 лет")
-    @Description("При создании заявки с плановой датой в прошлом должен остаться на экране создания заявки")
+    @Description("При создании заявки с плановой датой в будущем должна появляться ошибка")
     @Test
     public void shouldStayOnClaimsCreationScreenWhenCreatingAClaimsStoryAfter5Years() {
         appBar.switchToClaims();
@@ -126,20 +128,20 @@ public class ClaimTest {
         createClaims.addTime(time);
         createClaims.addDescription(description);
         createClaims.pressSave();
-        createClaims.checkPageCreatClaims();
+        createClaims.checkErrorDisplay(textErrorWrongData);
     }
 
     @Severity(value = SeverityLevel.CRITICAL)
     @Epic("Заявки")
     @Feature("Создание заявки с пустыми полями")
-    @Description("При создании заявки с пустыми полями должен остаться на экране создания заявки")
+    @Description("При создании заявки с пустыми полями должна появляться ошибка")
     @Test
     public void shouldStayOnClaimsCreationScreenWhenCreatingClaimsWithEmptyFields() {
         appBar.switchToClaims();
         claims.pressAddClaim();
         createClaims.pressSave();
         createClaims.pressOk();
-        createClaims.checkPageCreatClaims();
+        createClaims.checkErrorDisplay(textErrorEmptyField);
     }
 
     @Severity(value = SeverityLevel.NORMAL)

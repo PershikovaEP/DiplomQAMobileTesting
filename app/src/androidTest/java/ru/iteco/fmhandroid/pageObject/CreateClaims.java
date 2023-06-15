@@ -15,6 +15,7 @@ import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
@@ -39,24 +40,28 @@ public class CreateClaims {
 
     @Step("Ввод в поле тема {text}")
     public void addTitle(String text) {
+        Allure.step("Ввод в поле тема {text}");
         title.check(matches(isDisplayed()));
         title.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Ввод в поле исполнитель {text}")
     public void addExecutor(String text) {
+        Allure.step("Ввод в поле исполнитель {text}");
         executor.check(matches(isDisplayed()));
         executor.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Ввод в поле дата {text}")
     public void addDate(String text) {
+        Allure.step("Ввод в поле дата {text}");
         date.check(matches(isDisplayed()));
         date.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Ввод в поле время {text}")
     public void addTime(String text) {
+        Allure.step("Ввод в поле время {text}");
         time.check(matches(isDisplayed()));
         time.perform(replaceText(text), closeSoftKeyboard());
 
@@ -64,12 +69,14 @@ public class CreateClaims {
 
     @Step("Ввод в поле описание {text}")
     public void addDescription(String text) {
+        Allure.step("Ввод в поле описание {text}");
         description.check(matches(isDisplayed()));
         description.perform(replaceText(text), closeSoftKeyboard());
     }
 
     @Step("Нажатие на кнопку Сохранить")
     public void pressSave() {
+        Allure.step("Нажатие на кнопку Сохранить");
         closeSoftKeyboard();
         scrollTo();
         onView(isRoot()).perform(waitDisplayed(buttonSave, 10000));
@@ -79,12 +86,14 @@ public class CreateClaims {
 
     @Step("Нажатие на кнопку ОК")
     public void pressOk() {
+        Allure.step("Нажатие на кнопку ОК");
         buttonOk.check(matches(isDisplayed()));
         buttonOk.perform(click());
     }
 
     @Step("Создание заявки с полями: тема {title}, исполнитель {executor}, дата {date}, время {time}, описание {description}")
     public void createClaims(String title, String executor, String date, String time, String description) {
+        Allure.step("Создание заявки с полями: тема {title}, исполнитель {executor}, дата {date}, время {time}, описание {description}");
         addTitle(title);
         addExecutor(executor);
         addDate(date);
@@ -94,9 +103,9 @@ public class CreateClaims {
         pressSave();
     }
 
-    @Step("Проверка нахождения на экране Создание заявки")
-    public void checkPageCreatClaims() {
-        textToScreen.check(matches(isDisplayed()));
-        textToScreen.check(matches(withText("Создание")));
+    @Step("Проверка отображения ошибки")
+    public void checkErrorDisplay(String text) {
+        Allure.step("Проверка отображения ошибки");
+        onView(withText(text)).check(matches(isDisplayed()));
     }
 }

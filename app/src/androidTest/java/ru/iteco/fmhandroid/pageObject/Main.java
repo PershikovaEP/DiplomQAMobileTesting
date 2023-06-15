@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.is;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
@@ -42,6 +43,7 @@ public class Main {
 
     @Step("Проверка видимости элемента с текстом Новости")
     public void checkNews() {
+        Allure.step("Проверка видимости элемента с текстом Новости");
         textViewMainNews.check(matches(isDisplayed()));
         textViewMainNews.check(matches(withText("Новости")));
     }

@@ -8,6 +8,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
@@ -23,6 +24,7 @@ public class OurMission {
 
     @Step("Проверка нахождения на экране Тематические статьи")
     public void textScreenCheckIsDisplayed() {
+        Allure.step("Проверка нахождения на экране Тематические статьи");
         onView(withId(textScreen)).check(matches(isDisplayed()));
         onView(withId(textScreen)).check(matches(withText(text)));
     }
