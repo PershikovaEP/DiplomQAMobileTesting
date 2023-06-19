@@ -13,7 +13,15 @@ import static org.hamcrest.Matchers.allOf;
 
 import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+
 import androidx.test.espresso.ViewInteraction;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Step;
@@ -28,7 +36,7 @@ public class ControlPanelNews {
     }
 
 
-    private final ViewInteraction buttonEditNews = onView(withId(R.id.edit_news_item_image_view));
+    private int buttonEditNews = R.id.edit_news_item_image_view;
 
     private final int buttonDeleteNews = R.id.delete_news_item_image_view;
     private final ViewInteraction buttonOk = onView(withId(android.R.id.button1));
@@ -42,18 +50,18 @@ public class ControlPanelNews {
     }
 
     @Step("Нажатие на кнопку Редактирование новостей")
-    public void pressEditPanelNews() {
+    public void pressEditPanelNews(String text) {
         Allure.step("Нажатие на кнопку Редактирование новостей");
-        buttonEditNews.check(matches(isDisplayed()));
-        buttonEditNews.perform(click());
+        ViewInteraction edit = onView(allOf(withId(buttonEditNews), withContentDescription(text)));
+        edit.check(matches(isDisplayed()));
+        edit.perform(click());
         onView(isRoot()).perform(waitDisplayed(editNews.getButtonSave(), 6000));
     }
 
     @Step("Нажатие на кнопку Удалить новость")
     public void deleteNews(String text) {
         Allure.step("Нажатие на кнопку Удалить новость");
-       // ViewInteraction delete = onView(allOf(withId(buttonDeleteNews), withContentDescription(text)));
-        ViewInteraction delete = onView(withId(buttonDeleteNews));
+        ViewInteraction delete = onView(allOf(withId(buttonDeleteNews), withContentDescription(text)));
         delete.check(matches(isDisplayed()));
         delete.perform(click());
         buttonOk.check(matches(isDisplayed()));
@@ -72,4 +80,6 @@ public class ControlPanelNews {
         Allure.step("Проверка отсутствия новости с заголовком {text}");
         onView(withText(text)).check(doesNotExist());
     }
+
+
 }

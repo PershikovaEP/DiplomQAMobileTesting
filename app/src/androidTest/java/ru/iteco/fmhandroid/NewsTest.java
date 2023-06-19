@@ -9,6 +9,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
+import android.os.SystemClock;
+
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
@@ -61,7 +63,7 @@ public class NewsTest {
     private final String editTime = "16:00";
     private final String editDescription = "тест редактирование";
     private final String editCategory = "Объявление";
-    private final String textErrorWrongData = "Неверная дата";
+    private final String textErrorWrongData = "Неверно указан период";
     private final String textErrorEmptyField = "Заполните пустые поля";
 
 
@@ -147,6 +149,7 @@ public class NewsTest {
         controlPanelNews.addNews();
         onView(isRoot()).perform(waitDisplayed(createNews.getButtonSave(), 5000));
         createNews.pressSave();
+        SystemClock.sleep(1000);
         createNews.checkErrorDisplay(textErrorEmptyField);
     }
 
@@ -162,8 +165,7 @@ public class NewsTest {
         String title = "Создание";
         createNews.createNews(category, title, utils.currentDate(), time, description );
         controlPanelNews.searchNewsAndCheckIsDisplayed(title);
-
-        controlPanelNews.pressEditPanelNews();
+        controlPanelNews.pressEditPanelNews(title);
         editNews.editCategory(editCategory);
         String editTitle = "Редактирование";
         editNews.editTitle(editTitle);

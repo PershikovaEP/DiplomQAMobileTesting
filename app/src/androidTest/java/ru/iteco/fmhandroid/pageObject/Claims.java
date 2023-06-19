@@ -43,7 +43,8 @@ public class Claims {
     @Step("Поиск заявки с темой {text} и переход в нее")
     public void searchClaimsAndSwitch(String text) {
         Allure.step("Поиск заявки с темой {text} и переход в нее");
-        ViewInteraction textTitle = onView(withText(text));
+        ViewInteraction textTitle = onView(ViewMatchers.withId(R.id.claim_list_recycler_view))
+                .perform(RecyclerViewActions.scrollTo(hasDescendant(withText(text))));
         textTitle.check(matches(isDisplayed()));
         textTitle.perform(click());
         onView(isRoot()).perform(waitDisplayed(openClaims.getButtonEdit(), 6000));

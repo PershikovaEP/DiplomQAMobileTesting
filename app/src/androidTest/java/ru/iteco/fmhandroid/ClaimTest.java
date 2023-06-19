@@ -6,6 +6,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static ru.iteco.fmhandroid.Utils.Utils.waitDisplayed;
 
@@ -61,7 +62,7 @@ public class ClaimTest {
     private final String editDescription = "тест редактирование";
     private final String comment = "заявка исполнена";
 
-    private final String textErrorWrongData = "Неверная дата";
+    private final String textErrorWrongData = "Неверно указан период";
     private final String textErrorEmptyField = "Заполните пустые поля";
 
     @Rule
@@ -142,6 +143,7 @@ public class ClaimTest {
         createClaims.pressSave();
         createClaims.pressOk();
         createClaims.checkErrorDisplay(textErrorEmptyField);
+
     }
 
     @Severity(value = SeverityLevel.NORMAL)
